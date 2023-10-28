@@ -1,5 +1,9 @@
 <template>
-  <h1>Demo</h1>
+  <AdminTemplate>
+    <div slot="body">
+      <h3>Demo</h3>
+    </div>
+  </AdminTemplate>
 </template>
 
 <script>
