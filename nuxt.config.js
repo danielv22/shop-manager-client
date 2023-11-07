@@ -17,6 +17,8 @@ export default {
       { rel: 'stylesheet', href: '/assets/css/nucleo-svg.css' },
       { rel: 'stylesheet', href: '/assets/css/soft-ui-dashboard.min.css' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' },
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' }
+
     ],
     script:[
       {src:"/assets/js/core/popper.min.js"},
@@ -27,6 +29,7 @@ export default {
       {src:"/assets/js/plugins/dragula/dragula.min.js"},
       {src:"/assets/js/plugins/jkanban/jkanban.js"},
       {src:"/assets/js/plugins/chartjs.min.js"},
+      {src:"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"}
     ]
   },
 
@@ -36,6 +39,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/api'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -47,6 +51,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
+    'vue-sweetalert2/nuxt'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
