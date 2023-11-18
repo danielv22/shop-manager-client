@@ -42,7 +42,7 @@
               <div class="col-12 py-2" style="min-height: 60vh;max-height: 60vh;overflow-y: scroll;overflow-x: unset">
                 <div class="row">
                   <div class="col-3" v-for="p in productsCategory">
-                    <PosProduct :product="p" @AddCarrito="AddCarrito"></PosProduct>
+                    <PosSale :product="p" @AddCarrito="AddCarrito"></PosSale>
                   </div>
                 </div>
               </div>
@@ -233,8 +233,8 @@ export default {
 
   data() {
     return {
-      modulo: "Nueva compra",
-      page: "Compras",
+      modulo: "Nueva Venta",
+      page: "Ventas",
       buscar: "",
       brand:"all",
       category:"all",
@@ -289,33 +289,40 @@ export default {
     },
   },
   methods: {
-    async getData(path) {
+    async getData (path) {
       const res = await this.$api.$get(path);
       return res;
     },
-    async Data() {
+    async Data () {
       try {
-        await Promise.all([this.getData('brands'),this.getData('products'),this.getData('categories'),]).then((v) => {
-          this.brands= v[0];/** modificar por /brands /products /categories */
-          this.products= v[1];
-          this.categories= v[2];
-        });
+        await Promise.all([
+          this.getData('brands'),
+          this.getData('stocks'),
+          this.getData('categories'),]).then((v) => {
+            this.brands= v[0];/** modificar por /brands /products /categories */
+            this.products= v[1];
+            this.categories= v[2];
+          });
       } catch (e) {
         console.log(e);
       }
     },
-    AddCarrito(product){
+    AddCarrito (product) {
       let id = product.id;
-      let searchRecord = this.cart.filter((i)=>i.product.id == id)
-      if(searchRecord.length>0){
-        let index = this.cart.findIndex((i)=>i.product.id == id)
-        this.cart[index].amount +=1
-        console.log(index)
-      }else{
-        const item ={
-        product : product,
-        amount: 1,
-        price: product.purchase_price
+      let searchRecord = this.cart.filter((i) => i.product.id == id)
+      if (searchRecord.length > 0) {
+        let index = this.cart.findIndex((i) => i.product.id == id)
+        if ((this.cart[index].amount + 1) > this.cart[index].stock) {
+          return false
+        } else {
+          this.cart[index].amount += 1
+        }
+      } else {
+        const item = {
+          product : product,
+          amount: 1,
+          stock: product.stock,
+          price: product.sale_price
         }
         this.cart.push(item)
       }
@@ -337,17 +344,19 @@ export default {
         let selft = this
         try {
           const operation = {
-            total : this.totalCart,
-            type:1,
+            total: this.totalCart,
+            type: 1,
+            pago: 0,
+            cambio: 0,
             motive:'',
-            provider:'PUBLICO GENERAL',
+            cliente: 'PUBLICO GENERAL',
             cart: this.cart,
           }
-          const res = await this.$api.$post('purchases', operation);
+          const res = await this.$api.$post('sales', operation);
           console.log(res);
           this.$swal
             .fire({
-              title: "Compra Guardada!",
+              title: "Venta Guardada!",
               showDenyButton: false,
               showCancelButton: false,
               confirmButtonText: "Ok",
