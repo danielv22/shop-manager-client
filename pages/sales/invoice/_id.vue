@@ -9,7 +9,7 @@
               <div class="card-header p-3 pb-0">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6>Detalle de compra</h6>
+                    <h6>Detalle de Venta</h6>
                     <p class="text-sm mb-0">
                       Compra no. <b> {{ model.id }}</b> de <b>{{ model.date }} </b>
                     </p>
@@ -23,7 +23,7 @@
               <div class="card-body p-3 pt-0">
                 <hr class="horizontal dark mt-0 mb-4" />
                 <div class="row">
-                  <div class="col-12" v-for="m in model.stockPurchase">
+                  <div class="col-12" v-for="m in model.stockSale">
                     <div class="d-flex">
 
                       <div>
@@ -46,10 +46,9 @@
                     <ul class="list-group">
                       <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                         <div class="d-flex flex-column">
-                          <h6 class="mb-3 text-sm">Detalle de compra</h6>
-                          <span class="mb-2 text-xs">Proveedor:
-                            <span class="text-dark font-weight-bold ms-2">{{ model.provider }}</span></span>
-
+                          <h6 class="mb-3 text-sm">Detalle de Venta</h6>
+                          <span class="mb-2 text-xs">Cliente:
+                            <span class="text-dark font-weight-bold ms-2">{{ model.client }}</span></span>
                         </div>
                       </li>
                     </ul>
@@ -85,14 +84,14 @@ export default {
       load: true,
 
       model: {
-        total:0,
-        stockPurchase:[],
+        total: 0,
+        stockSale: [],
 
 
       },
-      apiUrl: "compras",
-      page: "Compras",
-      modulo: "Invoice",
+      apiUrl: 'sales',
+      page: 'Compras',
+      modulo: 'Invoice',
       marcas: [],
       medidas: [],
       categorias: [],
@@ -107,9 +106,9 @@ export default {
   mounted() {
     this.$nextTick(async () => {
       try {
-        await Promise.all([this.GET_DATA('purchases/'+this.$route.params.id)]).then((v) => {
+        await Promise.all([this.GET_DATA(`${this.apiUrl}/${this.$route.params.id}`)]).then((v) => {
           this.model = v[0];
-        });/** modificar get_data por purchases/ */
+        });
       } catch (e) {
         console.log(e);
       } finally {

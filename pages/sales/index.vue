@@ -346,10 +346,10 @@ export default {
           const operation = {
             total: this.totalCart,
             type: 1,
-            pago: 0,
-            cambio: 0,
-            motive:'',
-            cliente: 'PUBLICO GENERAL',
+            pay: 0,
+            change: 0,
+            reason: '',
+            client: 'PUBLICO GENERAL',
             cart: this.cart,
           }
           const res = await this.$api.$post('sales', operation);
@@ -361,12 +361,15 @@ export default {
               showCancelButton: false,
               confirmButtonText: "Ok",
             })
-            .then((result) => {
+            .then((async (result) => {
               /* Read more about isConfirmed, isDenied below */
               if (result.isConfirmed) {
                 selft.Clean()
+                self.load = true
+                await selft.Data()
+                self.load = false
               }
-            });
+            }))
         } catch (e) {
           console.log(e);
         } finally {

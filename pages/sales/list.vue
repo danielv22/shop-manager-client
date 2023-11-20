@@ -11,7 +11,7 @@
                   <thead>
                     <th class="py-0 px-1">#</th>
                     <th class="py-0 px-1">FECHA</th>
-                    <th class="py-0 px-1">PROVEEDOR</th>
+                    <th class="py-0 px-1">CLIENTE</th>
                     <th class="py-0 px-1">TOTAL</th>
                     <th class="py-0 px-1"></th>
                   </thead>
@@ -19,7 +19,7 @@
                     <tr v-for="(m, i) in list">
                       <td class="py-0 px-1">{{ i + 1 }}</td>
                       <td class="py-0 px-1">{{ m.date}}</td>
-                      <td class="py-0 px-1">{{ m.provider }}</td>
+                      <td class="py-0 px-1">{{ m.client }}</td>
                       <td class="py-0 px-1">{{ m.total}}</td>
                       <td class="py-0 px-1">
                         <div class="btn-group">
@@ -62,10 +62,10 @@ export default {
     return {
       load: true,
       list: [],
-      apiUrl: 'purchases',/**modificar apiUrl: /purchases */
-      page: "Compras",
-      modulo: "Lista de Compras",
-      url_modify: "/purchases/invoice/",
+      apiUrl: 'sales',
+      page: "Ventas",
+      modulo: "Lista de Ventas",
+      url_modify: "/sales/invoice/",
     };
   },
   methods: {
