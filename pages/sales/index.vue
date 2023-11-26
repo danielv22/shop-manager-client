@@ -251,6 +251,10 @@ export default {
         amount:0,
         price:0,
       },
+      branch:{
+
+      },
+      user:{},
     };
   },
   computed:{
@@ -351,6 +355,7 @@ export default {
             reason: '',
             client: 'PUBLICO GENERAL',
             cart: this.cart,
+            checkout_id:this.user.checkout_id
           }
           const res = await this.$api.$post('sales', operation);
           console.log(res);
@@ -381,6 +386,8 @@ export default {
       },
   },
   mounted() {
+    let user = localStorage.getItem('userAuth')
+    this.user = JSON.parse(user)
     this.$nextTick(async () => {
       try {
         await this.Data()
