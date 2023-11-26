@@ -1,24 +1,29 @@
 <template>
-
   <AdminTemplate>
-    <div slot="body">
-
-      h3
-    </div>
-
+     <div slot="body">
+       {{user}}
+     </div>
   </AdminTemplate>
-  </template>
-
-<script>
-import AdminTemplate from '../components/AdminTemplate.vue';
-
-export default {
-    name: 'IndexPage',
-    head() {
-        return {
-            title: 'Index'
-        };
-    },
-    components: { AdminTemplate }
-}
-</script>
+ </template>
+ 
+ <script>
+ export default {
+   name: "IndexPage",
+   head() {
+     return {
+       title: "Index",
+     };
+   },
+   data(){
+     return {
+       user:{}
+     }
+   },
+   mounted(){
+     this.$nextTick(()=>{
+       let user = localStorage.getItem('userAuth')
+       this.user = JSON.parse(user)
+     })
+   }
+ };
+ </script>
