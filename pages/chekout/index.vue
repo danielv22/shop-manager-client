@@ -13,7 +13,7 @@
                       <h6>Movimientos</h6>
                       <button
                         type="button"
-                        @click="modalActivity=true"
+                        @click="modalMovimiento=true"
                         class="btn btn-icon-only btn-rounded btn-outline-success mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center ms-auto"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
@@ -50,21 +50,21 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(m,i) in checkout.activities">
+                          <tr v-for="(m,i) in caja.movimientos">
                             <td>
                               <p class="text-sm font-weight-bold mb-0">
                                 {{i+1}}
                               </p>
                             </td>
                             <td>
-                              <p class="text-sm font-weight-bold mb-0">{{m.motive}}</p>
+                              <p class="text-sm font-weight-bold mb-0">{{m.motivo}}</p>
                             </td>
                             <td>
-                              <p v-if="m.type==1" class="text-sm font-weight-bold mb-0">
-                                {{m.value}}
+                              <p v-if="m.tipo==1" class="text-sm font-weight-bold mb-0">
+                                {{m.monto}}
                               </p>
                               <p v-else class="text-sm text-danger font-weight-bold mb-0">
-                                -{{m.value}}
+                                -{{m.monto}}
                               </p>
                             </td>
 
@@ -85,7 +85,7 @@
                 class="card-header bg-gradient-dark text-center pt-4 pb-5 position-relative"
               >
                 <div class="z-index-1 position-relative">
-                  <h1 class="text-white mt-2 mb-0"><small></small>{{Number(checkout.total).toFixed(2)}}</h1>
+                  <h1 class="text-white mt-2 mb-0"><small></small>{{Number(caja.total).toFixed(2)}}</h1>
                   <h6 class="text-white">Total</h6>
                 </div>
               </div>
@@ -201,7 +201,7 @@
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Ingresos</h6>
                         <span class="text-xs"
-                          >{{Number(checkout.revenues).toFixed(2)}}</span
+                          >{{Number(caja.ingresos).toFixed(2)}}</span
                         >
                       </div>
                     </div>
@@ -265,7 +265,7 @@
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Salidas</h6>
                         <span class="text-xs"
-                          >{{Number(checkout.expenses).toFixed(2)}}</span
+                          >{{Number(caja.salidas).toFixed(2)}}</span
                         >
                       </div>
                     </div>
@@ -327,7 +327,7 @@
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Ventas</h6>
                         <span class="text-xs"
-                          >{{Number(checkout.sales).toFixed(2)}}
+                          >{{Number(caja.ventas).toFixed(2)}}
                         </span
                         >
                       </div>
@@ -391,7 +391,7 @@
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Compras</h6>
-                        <span class="text-xs font-weight-bold">{{Number(checkout.purchases).toFixed(2)}}</span>
+                        <span class="text-xs font-weight-bold">{{Number(caja.compras).toFixed(2)}}</span>
                       </div>
                     </div>
                     <div class="d-flex">
@@ -415,7 +415,7 @@
           </div>
           <div
             class="modal fade"
-            :class="modalActivity ? 'showModal' : ''"
+            :class="modalMovimiento ? 'showModal' : ''"
             id="AjusteModal"
             tabindex="-1"
             role="dialog"
@@ -431,7 +431,7 @@
                   <button
                     type="button"
                     class="btn-close text-dark"
-                    @click="modalActivity = false"
+                    @click="modalMovimiento = false"
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   >
@@ -443,19 +443,19 @@
                       <div class="col-12">
                         <div class="form-group">
                           <label for="">Motivo</label>
-                          <input type="text" v-model="activity.motive" name="" class="form-control" id="">
+                          <input type="text" v-model="movimiento.motivo" name="" class="form-control" id="">
                         </div>
                       </div>
                       <div class="col-12">
                         <div class="form-group">
                           <label for="">Monto</label>
-                          <input type="text" v-model="activity.value" name="" class="form-control" id="">
+                          <input type="text" v-model="movimiento.monto" name="" class="form-control" id="">
                         </div>
                       </div>
                       <div class="col-12">
                         <div class="form-group">
                           <label for="">Movimiento</label>
-                          <select name="" v-model="activity.type"  class="form-control"  id="">
+                          <select name="" v-model="movimiento.tipo"  class="form-control"  id="">
                             <option value="1">INGRESO</option>
                             <option value="2">SALIDA</option>
                           </select>
@@ -466,7 +466,7 @@
                 <div class="modal-footer">
                   <button
                     type="button"
-                    @click="modalActivity = false"
+                    @click="modalMovimiento = false"
                     class="btn bg-gradient-secondary"
                     data-bs-dismiss="modal"
                   >
@@ -474,7 +474,7 @@
                   </button>
                   <button
                     type="button"
-                    @click="AddActivity()"
+                    @click="AddMovimiento()"
                     class="btn btn-primary"
 
                   >
@@ -503,18 +503,18 @@ export default {
       modulo: "Caja",
       page: "Caja",
       load: false,
-      modalActivity: false,
+      modalMovimiento: false,
       user:{},
-      checkout:{
-        expenses:0,
-        revenues:0,
+      caja:{
+        salidas:0,
+        ingresos:0,
         total:0,
-        activities:[]
+        movimientos:[]
       },
-      activity:{
-        motive:'',
-        value:0,
-        type:1
+      movimiento:{
+        motivo:'',
+        monto:0,
+        tipo:1
       }
     };
   },
@@ -524,13 +524,13 @@ export default {
       const res = await this.$api.$get(path);
       return res;
     },
-    async AddActivity(){
+    async AddMovimiento(){
       this.load=true
-      this.modalActivity=false
-      this.activity.checkout_id = this.checkout.id
-     await this.$api.$post('checkout-activities',this.activity);
-     await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
-        this.checkout = v[0]
+      this.modalMovimiento=false
+      this.movimiento.caja_id = this.caja.id
+     await this.$api.$post('cajaMovimientos',this.movimiento);
+     await Promise.all([this.getData('cajas/'+this.user.caja_id)]).then((v)=>{
+        this.caja = v[0]
       })
       this.load=false
     },
@@ -538,14 +538,14 @@ export default {
       this.load=true
       try{
 
-        let id = this.checkout.id
-       let res = await this.$api.$put('checkouts/'+id,{id:id});
+        let id = this.caja.id
+       let res = await this.$api.$put('cajas/'+id,{id:id});
         let user = this.user
-        user.checkout_id = res.id
+        user.caja_id = res.id
         localStorage.setItem('userAuth',JSON.stringify(user))
         this.user= user
-        await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
-        this.checkout = v[0]
+        await Promise.all([this.getData('cajas/'+this.user.caja_id)]).then((v)=>{
+        this.caja = v[0]
       })
       }catch(e){
 
@@ -559,8 +559,8 @@ export default {
       this.user = JSON.parse(user)
     this.$nextTick(async () => {
     this.load=true
-      await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
-        this.checkout = v[0]
+      await Promise.all([this.getData('cajas/'+this.user.caja_id)]).then((v)=>{
+        this.caja = v[0]
       })
       this.load=false
     });

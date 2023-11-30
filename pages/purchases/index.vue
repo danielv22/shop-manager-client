@@ -251,7 +251,6 @@ export default {
         amount:0,
         price:0,
       },
-      user:{}
     };
   },
   computed:{
@@ -342,7 +341,6 @@ export default {
             type:1,
             motive:'',
             provider:'PUBLICO GENERAL',
-            checkout_id:this.user.checkout_id,
             cart: this.cart,
           }
           const res = await this.$api.$post('purchases', operation);
