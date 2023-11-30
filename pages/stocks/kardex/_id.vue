@@ -47,7 +47,7 @@
                       </div>
                       <div class="mx-1">
                         <h6 class="mb-0 mt-3">Ganancia Unitaria</h6>
-                        <h5>{{ Number(model.purchase_price - model.sale_price).toFixed(2) }}</h5>
+                        <h5>{{ Number(model.sale_price - model.purchase_price).toFixed(2) }}</h5>
                       </div>
                     </div>
                     <span class="badge " :class="[model.stock<model.minimum_stock?'badge-danger':'badge-success']"
