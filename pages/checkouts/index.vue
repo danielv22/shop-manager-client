@@ -41,12 +41,9 @@
                             >
                             Motivo
                             </th>
-                            <th
-                              class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                         Monto
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                              Monto
                             </th>
-
                           </tr>
                         </thead>
                         <tbody>
@@ -67,13 +64,10 @@
                                 -{{m.value}}
                               </p>
                             </td>
-
                           </tr>
-
                         </tbody>
                       </table>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -200,9 +194,7 @@
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Ingresos</h6>
-                        <span class="text-xs"
-                          >{{Number(checkout.revenues).toFixed(2)}}</span
-                        >
+                        <span class="text-xs">{{Number(checkout.revenues).toFixed(2)}}</span>
                       </div>
                     </div>
                     <div class="d-flex">
@@ -264,9 +256,7 @@
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Salidas</h6>
-                        <span class="text-xs"
-                          >{{Number(checkout.expenses).toFixed(2)}}</span
-                        >
+                        <span class="text-xs">{{Number(checkout.expenses).toFixed(2)}}</span>
                       </div>
                     </div>
                     <div class="d-flex">
@@ -476,7 +466,6 @@
                     type="button"
                     @click="AddActivity()"
                     class="btn btn-primary"
-
                   >
                     Guardar
                   </button>
@@ -504,65 +493,64 @@ export default {
       page: "Caja",
       load: false,
       modalActivity: false,
-      user:{},
-      checkout:{
-        expenses:0,
-        revenues:0,
-        total:0,
-        activities:[]
+      user: {},
+      checkout: {
+        expenses: 0,
+        revenues: 0,
+        total: 0,
+        activities: []
       },
-      activity:{
-        motive:'',
-        value:0,
-        type:1
+      activity: {
+        motive: '',
+        value: 0,
+        type: 1
       }
     };
   },
   computed: {},
   methods: {
-    async getData(path) {
+    async getData (path) {
       const res = await this.$api.$get(path);
       return res;
     },
-    async AddActivity(){
-      this.load=true
-      this.modalActivity=false
+    async AddActivity () {
+      this.load = true
+      this.modalActivity = false
       this.activity.checkout_id = this.checkout.id
-     await this.$api.$post('checkout-activities',this.activity);
-     await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
+      await this.$api.$post('checkout-activities',this.activity);
+      await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
         this.checkout = v[0]
       })
-      this.load=false
+      this.load = false
     },
     async Save(){
-      this.load=true
-      try{
-
+      this.load = true
+      try {
         let id = this.checkout.id
-       let res = await this.$api.$put('checkouts/'+id,{id:id});
+        let res = await this.$api.$put('checkouts/' + id, {id:id});
         let user = this.user
         user.checkout_id = res.id
-        localStorage.setItem('userAuth',JSON.stringify(user))
-        this.user= user
+        localStorage.setItem('userAuth', JSON.stringify(user))
+        this.user = user
         await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
         this.checkout = v[0]
       })
       }catch(e){
 
       }finally{
-        this.load=false
+        this.load = false
       }
     }
   },
   mounted() {
     let user = localStorage.getItem('userAuth')
-      this.user = JSON.parse(user)
+    this.user = JSON.parse(user)
     this.$nextTick(async () => {
-    this.load=true
-      await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
-        this.checkout = v[0]
-      })
-      this.load=false
+    this.load = true
+    await Promise.all([this.getData('checkouts/' + this.user.checkout_id)]).then((v)=>{
+      this.checkout = v[0]
+    })
+    this.load = false
     });
   },
 };

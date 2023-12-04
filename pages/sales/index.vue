@@ -227,8 +227,6 @@
 
 <script>
 
-
-
 export default {
   head() {
     return {
@@ -264,7 +262,7 @@ export default {
     };
   },
   computed: {
-    productsFilter() {
+    productsFilter () {
       let buscar = this.buscar;
       if (buscar != '') {
         return this.products.filter((a) => {
@@ -276,7 +274,7 @@ export default {
       }
       return this.products;
     },
-    productsBrand() {
+    productsBrand () {
       let brand = this.brand;
       if (brand != 'all') {
         return this.productsFilter.filter((a) => {
@@ -285,7 +283,7 @@ export default {
       }
       return this.productsFilter;
     },
-    productsCategory() {
+    productsCategory () {
       let category = this.category;
       if (category != 'all') {
         return this.productsBrand.filter((a) => {
@@ -294,8 +292,8 @@ export default {
       }
       return this.productsBrand;
     },
-    totalCart() {
-      return this.cart.reduce((a, b) => a + (b.amount * b.price), 0)
+    totalCart () {
+      return this.cart.reduce((a,b)=>a+(b.amount*b.price),0)
     },
   },
   methods: {
@@ -338,10 +336,10 @@ export default {
       }
 
     },
-    deleteItem(i) {
-      this.cart.splice(i, 1)
+    deleteItem (i) {
+      this.cart.splice(i,1)
     },
-    barCode() {
+    barCode () {
       let code = this.buscar;
       let searchRecord = this.productsCategory.filter((i) => i.barcode == code)
       if (searchRecord.length > 0) {
@@ -349,49 +347,49 @@ export default {
         this.buscar = ''
       }
     },
-    async Save() {
-      this.load = true;
-      let selft = this
-      try {
-        const operation = {
-          total: this.totalCart,
-          type: 1,
-          pay: 0,
-          change: 0,
-          reason: '',
-          client: 'PUBLICO GENERAL',
-          cart: this.cart,
-          checkout_id: this.user.checkout_id
+    async Save () {
+        this.load = true;
+        let self = this
+        try {
+          const operation = {
+            total: this.totalCart,
+            type: 1,
+            pay: 0,
+            change: 0,
+            reason: '',
+            client: 'PUBLICO GENERAL',
+            cart: this.cart,
+            checkout_id: this.user.checkout_id
+          }
+          const res = await this.$api.$post('sales', operation);
+          console.log(res);
+          this.$swal
+            .fire({
+              title: "Venta Guardada!",
+              showDenyButton: false,
+              showCancelButton: false,
+              confirmButtonText: "Ok",
+            })
+            .then((async (result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                self.Clean()
+                self.load = true
+                await self.Data()
+                self.load = false
+              }
+            }))
+        } catch (e) {
+          console.log(e);
+        } finally {
+          this.load = false;
         }
-        const res = await this.$api.$post('sales', operation);
-        console.log(res);
-        this.$swal
-          .fire({
-            title: "Venta Guardada!",
-            showDenyButton: false,
-            showCancelButton: false,
-            confirmButtonText: "Ok",
-          })
-          .then((async (result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              selft.Clean()
-              self.load = true
-              await selft.Data()
-              self.load = false
-            }
-          }))
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.load = false;
-      }
-    },
-    Clean() {
-      this.cart = []
-    },
+      },
+      Clean(){
+        this.cart = []
+      },
   },
-  mounted() {
+  mounted () {
     let user = localStorage.getItem('userAuth')
     this.user = JSON.parse(user)
     this.$nextTick(async () => {
