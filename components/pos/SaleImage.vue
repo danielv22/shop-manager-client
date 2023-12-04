@@ -1,0 +1,35 @@
+<template>
+  <div class="card p-0" @click="addCart()">
+    <div class="card-header mx-4 mt-2 p-1 text-center">
+      <div class="avatar me-3 " v-if="product.image!=null">
+        <img :src="product.image.url" alt="image" class="border-radius-lg shadow">
+      </div>
+      <div v-else class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+        <i class="fas fa-archive opacity-10" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="card-body pt-0 p-1 text-center">
+      <h6 class="text-center mb-0 text-xxs">
+        <i class="fas fa-barcode"></i> {{ product.barcode }}
+      </h6>
+      <span class="text-xs">{{ product.name }}</span>
+      <hr class="horizontal dark my-2" />
+      <h5 class="mb-0 text-sm">{{ Number(product.sale_price).toFixed(2) }}</h5>
+    </div>
+  </div>
+</template>
+<script>
+export default{
+  props:{
+    product:{
+      type: Object,
+      default:()=>{},
+    }
+  },
+  methods:{
+    addCart(){
+      this.$emit('AddCarrito',this.product)
+    }
+  }
+}
+</script>

@@ -42,6 +42,12 @@
                           >
                             <i class="fas fa-pen"></i>
                           </nuxtLink>
+                          <nuxtLink
+                            :to="url_image + m.id"
+                            class="btn btn-success btn-sm py-1 px-2"
+                          >
+                            <i class="fas fa-image"></i>
+                          </nuxtLink>
                           <button
                             type="button"
                             @click="Eliminar(m.id)"
@@ -80,6 +86,7 @@ export default {
       modulo: "Productos",
       url_new: "/configuration/products/new",
       url_modify: "/configuration/products/modify/",
+      url_image: "/configuration/products/image/",
     };
   },
   methods: {
