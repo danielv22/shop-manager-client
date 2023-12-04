@@ -369,6 +369,7 @@ export default {
             .then((async (result) => {
               /* Read more about isConfirmed, isDenied below */
               if (result.isConfirmed) {
+                window.open(res.url_pdf, '_blank');
                 selft.Clean()
                 self.load = true
                 await selft.Data()
