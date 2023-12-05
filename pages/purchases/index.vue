@@ -335,7 +335,7 @@ export default {
     },
     async Save() {
         this.load = true;
-        let self = this
+        let selft = this
         try {
           const operation = {
             total : this.totalCart,
@@ -357,7 +357,7 @@ export default {
             .then((result) => {
               /* Read more about isConfirmed, isDenied below */
               if (result.isConfirmed) {
-                self.Clean()
+                selft.Clean()
               }
             });
         } catch (e) {
@@ -371,8 +371,6 @@ export default {
       },
   },
   mounted() {
-    let user = localStorage.getItem('userAuth')
-    this.user = JSON.parse(user)
     this.$nextTick(async () => {
       try {
         await this.Data()
