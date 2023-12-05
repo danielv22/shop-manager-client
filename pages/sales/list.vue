@@ -29,6 +29,15 @@
                           >
                             <i class="fas fa-eye"></i>
                           </nuxtLink>
+                          <a
+                            type="button"
+                            :href="m.url_pdf"
+                            @click="ImprimirVenta(m)"
+                            target="_blank"
+                            class="btn btn-success btn-sm py-1 px-2"
+                          >
+                            <i class="fas fa-print"></i>
+                          </a>
                           <button
                             type="button"
                             @click="Eliminar(m.id)"
@@ -63,8 +72,11 @@ export default {
       load: true,
       list: [],
       apiUrl: 'sales',
+      branches: [],
       page: "Ventas",
       modulo: "Lista de Ventas",
+      branch:{
+      },
       url_modify: "/sales/invoice/",
     };
   },
@@ -104,6 +116,12 @@ export default {
           }
         });
     },
+    async ImprimirVenta(sale){
+      let branch = this.branch
+      branch.sale = sale
+      const res = await this.$printer.$post(branch.url_printer+"sale", branch);
+      console.log(res)
+    }
   },
   mounted() {
     this.$nextTick(async () => {
