@@ -16,9 +16,7 @@
                             <i class="ni ni-archive-2 text-lg" aria-hidden="true"></i>
                           </span>
                           <input type="text" class="form-control bg-transparent border-0 text-white"
-                            placeholder="Buscar..."
-                            v-model="buscar"
-                            @keyup.enter="barCode()"/>
+                            placeholder="Buscar..." v-model="buscar" @keyup.enter="barCode()" />
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-12 my-auto ms-auto">
@@ -34,6 +32,11 @@
                           </select>
                         </div>
                       </div>
+                      <div class="d-flex mb-3">
+                        <div class="form-check form-switch ms-auto">
+                          <input v-model="image" class="form-check-input" checked="" type="checkbox">
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -42,7 +45,8 @@
               <div class="col-12 py-2" style="min-height: 60vh;max-height: 60vh;overflow-y: scroll;overflow-x: unset">
                 <div class="row">
                   <div class="col-3" v-for="p in productsCategory">
-                    <PosSale :product="p" @AddCarrito="AddCarrito"></PosSale>
+                    <PosSale v-if="image==true" :product="p" @AddCarrito="AddCarrito"></PosSale>
+                    <PosSaleImage v-else :product="p" @AddCarrito="AddCarrito"></PosSaleImage>
                   </div>
                 </div>
               </div>
@@ -67,9 +71,9 @@
                       <ul class="dropdown-menu dropdown-menu-end me-sm-n4 px-2 py-3" aria-labelledby="dropdownCam"
                         style="">
                         <li>
-                          <a class="dropdown-item border-radius-md" href="javascript:;" @click="category='all'">Todo</a>
+                          <a class="dropdown-item border-radius-md" href="javascript:;" @click="category = 'all'">Todo</a>
                         </li>
-                        <li v-for="c in categories" >
+                        <li v-for="c in categories">
                           <a class="dropdown-item border-radius-md" href="javascript:;" @click="c.id">{{ c.name }}</a>
                         </li>
                       </ul>
@@ -133,7 +137,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(m,i) in cart">
+                      <tr v-for="(m, i) in cart">
                         <td class="text-start">
                           <p class="text-xxs font-weight-bold mb-0 text-start">
                             {{ m.product.name }}
@@ -146,12 +150,13 @@
                         </td>
                         <td class="text-start">
                           <p class="text-xxs font-weight-bold mb-0 text-start">
-                            {{ Number(m.amount*m.price).toFixed(2) }}
+                            {{ Number(m.amount * m.price).toFixed(2) }}
                           </p>
                         </td>
                         <td>
                           <div class="input-group input-group-sm">
-                            <button class="btn btn-outline-primary mb-0 btn-sm" type="button" @click="[modalEdit=true, item=m]">
+                            <button class="btn btn-outline-primary mb-0 btn-sm" type="button"
+                              @click="[modalEdit = true, item = m]">
                               <i class="fas fa-pen"></i>
                             </button>
                             <button class="btn btn-outline-danger mb-0 btn-sm" type="button" @click="deleteItem(i)">
@@ -187,19 +192,19 @@
                     <div class="col-12">
                       <div class="form-group has-success">
                         <label for="">Articulo</label>
-                        <input type="text" placeholder="" disabled class="form-control" :value="item.product.name"/>
+                        <input type="text" placeholder="" disabled class="form-control" :value="item.product.name" />
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group has-success">
                         <label for="">Precio</label>
-                        <input type="text" placeholder=""  class="form-control" v-model.number="item.price"/>
+                        <input type="text" placeholder="" class="form-control" v-model.number="item.price" />
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-group has-success">
                         <label for="">Cantidad</label>
-                        <input type="text" placeholder=""  class="form-control" v-model.number="item.amount"/>
+                        <input type="text" placeholder="" class="form-control" v-model.number="item.amount" />
                       </div>
                     </div>
 
@@ -239,6 +244,7 @@ export default {
       brand:"all",
       category:"all",
       load: true,
+      image: true,
       modalEdit: false,
       products:[],
       brands:[],
@@ -260,20 +266,20 @@ export default {
   computed:{
     productsFilter(){
       let buscar = this.buscar;
-      if(buscar != ''){
-        return this.products.filter((a)=>{
-          let name = a.name!=null?a.name:'';
-          let barcode = a.barcode!=null?a.barcode:'';
+      if (buscar != '') {
+        return this.products.filter((a) => {
+          let name = a.name != null ? a.name : '';
+          let barcode = a.barcode != null ? a.barcode : '';
 
-          return name.toLowerCase().indexOf(buscar.toLowerCase())!=-1 || barcode.toLowerCase().indexOf(buscar.toLowerCase())!=-1
+          return name.toLowerCase().indexOf(buscar.toLowerCase()) != -1 || barcode.toLowerCase().indexOf(buscar.toLowerCase()) != -1
         });
       }
       return this.products;
     },
     productsBrand(){
       let brand = this.brand;
-      if(brand != 'all'){
-        return this.productsFilter.filter((a)=>{
+      if (brand != 'all') {
+        return this.productsFilter.filter((a) => {
           return a.brand_id == brand
         });
       }
@@ -281,8 +287,8 @@ export default {
     },
     productsCategory(){
       let category = this.category;
-      if(category != 'all'){
-        return this.productsBrand.filter((a)=>{
+      if (category != 'all') {
+        return this.productsBrand.filter((a) => {
           return a.category_id == category
         });
       }
@@ -293,25 +299,25 @@ export default {
     },
   },
   methods: {
-    async getData (path) {
+    async getData(path) {
       const res = await this.$api.$get(path);
       return res;
     },
-    async Data () {
+    async Data() {
       try {
         await Promise.all([
           this.getData('brands'),
           this.getData('stocks'),
           this.getData('categories'),]).then((v) => {
-            this.brands= v[0];/** modificar por /brands /products /categories */
-            this.products= v[1];
-            this.categories= v[2];
+            this.brands = v[0];/** modificar por /brands /products /categories */
+            this.products = v[1];
+            this.categories = v[2];
           });
       } catch (e) {
         console.log(e);
       }
     },
-    AddCarrito (product) {
+    AddCarrito(product) {
       let id = product.id;
       let searchRecord = this.cart.filter((i) => i.product.id == id)
       if (searchRecord.length > 0) {
@@ -323,7 +329,7 @@ export default {
         }
       } else {
         const item = {
-          product : product,
+          product: product,
           amount: 1,
           stock: product.stock,
           price: product.sale_price
@@ -337,8 +343,8 @@ export default {
     },
     barCode(){
       let code = this.buscar;
-      let searchRecord = this.productsCategory.filter((i)=>i.barcode == code)
-      if(searchRecord.length>0){
+      let searchRecord = this.productsCategory.filter((i) => i.barcode == code)
+      if (searchRecord.length > 0) {
         this.AddCarrito(searchRecord[0])
         this.buscar=''
       }
