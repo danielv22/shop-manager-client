@@ -28,7 +28,7 @@
                     <div class="mb-3">
                       <input
                         type="password"
-                        v-model="model.password"
+v-model="model.password"
                         class="form-control"
                         placeholder="Password"
                         aria-label="Password"
@@ -39,13 +39,14 @@
                       <button
                         type="button"
                         class="btn bg-gradient-info w-100 mt-4 mb-0"
-                        @click="Login()"
+                      @click="Login()"
                       >
                         Ingresar
                       </button>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
             <div class="col-md-6">
@@ -87,25 +88,30 @@
         try{
           const res = await this.$api.$post('login',this.model);
             let user = res
-            if (user.hasOwnProperty('errors')) {
-              this.$swal.fire({
-                title: "Credenciales incorrectas",
-                showDenyButton: false,
-                showCancelButton: false,
-                confirmButtonText: "Ok"
-              })
-            } else {
-              localStorage.setItem('userAuth', JSON.stringify(user))
+            if(user.hasOwnProperty('errors')){
+              this.$swal
+        .fire({
+          title: "Credenciales incorrectas",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Ok"
+
+        })
+            }else{
+              localStorage.setItem('userAuth',JSON.stringify(user))
               this.$router.push('/')
             }
-        } catch (e) {
+          }catch(e){
           console.log(e)
-          this.$swal.fire({
-            title: "No se puedo iniciar sesion",
-            showDenyButton: false,
-            showCancelButton: false,
-            confirmButtonText: "Ok"
-          })
+          this.$swal
+        .fire({
+          title: "No se puedo iniciar sesion",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Ok"
+
+        })
+
         }
       }
     }

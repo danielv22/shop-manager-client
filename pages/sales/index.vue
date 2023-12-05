@@ -222,6 +222,8 @@
 
 <script>
 
+
+
 export default {
   head() {
     return {
@@ -234,29 +236,29 @@ export default {
       modulo: "Nueva Venta",
       page: "Ventas",
       buscar: "",
-      brand: "all",
-      category: "all",
+      brand:"all",
+      category:"all",
       load: true,
       modalEdit: false,
-      products: [],
-      brands: [],
-      categories: [],
-      cart: [],
-      item: {
-        product: {
-          name: '',
+      products:[],
+      brands:[],
+      categories:[],
+      cart:[],
+      item:{
+        product:{
+          name:'',
         },
-        amount: 0,
-        price: 0,
+        amount:0,
+        price:0,
       },
-      branch: {
+      branch:{
 
       },
-      user: {},
+      user:{},
     };
   },
-  computed: {
-    productsFilter () {
+  computed:{
+    productsFilter(){
       let buscar = this.buscar;
       if(buscar != ''){
         return this.products.filter((a)=>{
@@ -268,7 +270,7 @@ export default {
       }
       return this.products;
     },
-    productsBrand () {
+    productsBrand(){
       let brand = this.brand;
       if(brand != 'all'){
         return this.productsFilter.filter((a)=>{
@@ -277,7 +279,7 @@ export default {
       }
       return this.productsFilter;
     },
-    productsCategory () {
+    productsCategory(){
       let category = this.category;
       if(category != 'all'){
         return this.productsBrand.filter((a)=>{
@@ -286,7 +288,7 @@ export default {
       }
       return this.productsBrand;
     },
-    totalCart () {
+    totalCart(){
       return this.cart.reduce((a,b)=>a+(b.amount*b.price),0)
     },
   },
@@ -330,20 +332,20 @@ export default {
       }
 
     },
-    deleteItem (i) {
+    deleteItem(i){
       this.cart.splice(i,1)
     },
-    barCode () {
+    barCode(){
       let code = this.buscar;
       let searchRecord = this.productsCategory.filter((i)=>i.barcode == code)
       if(searchRecord.length>0){
         this.AddCarrito(searchRecord[0])
-        this.buscar = ''
+        this.buscar=''
       }
     },
-    async Save () {
+    async Save() {
         this.load = true;
-        let self = this
+        let selft = this
         try {
           const operation = {
             total: this.totalCart,
@@ -353,7 +355,7 @@ export default {
             reason: '',
             client: 'PUBLICO GENERAL',
             cart: this.cart,
-            checkout_id: this.user.checkout_id
+            checkout_id:this.user.checkout_id
           }
           const res = await this.$api.$post('sales', operation);
           console.log(res);
@@ -367,9 +369,9 @@ export default {
             .then((async (result) => {
               /* Read more about isConfirmed, isDenied below */
               if (result.isConfirmed) {
-                self.Clean()
+                selft.Clean()
                 self.load = true
-                await self.Data()
+                await selft.Data()
                 self.load = false
               }
             }))
@@ -383,7 +385,7 @@ export default {
         this.cart = []
       },
   },
-  mounted () {
+  mounted() {
     let user = localStorage.getItem('userAuth')
     this.user = JSON.parse(user)
     this.$nextTick(async () => {
