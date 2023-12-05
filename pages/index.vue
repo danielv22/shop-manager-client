@@ -409,7 +409,7 @@
                  <h6>Ventas por meses</h6>
                  <p class="text-sm">
                    <i class="fa fa-arrow-up text-success"></i>
-                   <span class="font-weight-bold"></span> 
+                   <span class="font-weight-bold"></span>
                  </p>
                </div>
                <div class="card-body p-3">
@@ -934,7 +934,7 @@
                  <h6>Resumen de pedidos</h6>
                  <p class="text-sm">
                    <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                   <span class="font-weight-bold"></span> 
+                   <span class="font-weight-bold"></span>
                  </p>
                </div>
                <div class="card-body p-3">
@@ -1040,16 +1040,16 @@
   </AdminTemplate>
 </div>
  </template>
- 
+
  <script>
  export default {
    name: "IndexPage",
-   head() {
+   head () {
      return {
        title: "Index",
      };
    },
-   data(){
+   data () {
      return {
        user:{},
        page:'Dashboard',
@@ -1066,27 +1066,27 @@
       return res;
     },
   },
-   mounted(){
-     this.$nextTick(()=>{
+   mounted () {
+     this.$nextTick(() => {
        let user = localStorage.getItem('userAuth')
        this.user = JSON.parse(user)
        this.$nextTick(async () => {
          let self = this
 
         this.load=true
-        
+
 
           try{
             await Promise.all([this.getData('dashboard')]).then((v)=>{
             this.dashboard = v[0]
           })
-         
+
           }catch(e){
 
           }finally{
             this.load=false
             var ctx = document.getElementById("chart-bars").getContext("2d");
- 
+
  new Chart(ctx, {
    type: "bar",
    data: {
@@ -1258,9 +1258,8 @@
           }
         });
 
-    
+
      })
    }
  };
  </script>
- 
