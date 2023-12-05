@@ -222,6 +222,8 @@
 
 <script>
 
+
+
 export default {
   head() {
     return {
@@ -240,13 +242,6 @@ export default {
       category: "all",
       load: true,
       modalEdit: false,
-      products:[],
-      brands:[],
-      categories:[],
-      cart:[],
-      item:{
-        product:{
-          name:'',
       products: [],
       brands: [],
       categories: [],
@@ -255,8 +250,6 @@ export default {
         product: {
           name: '',
         },
-        amount:0,
-        price:0,
         amount: 0,
         price: 0,
       },

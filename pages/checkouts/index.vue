@@ -41,10 +41,6 @@
                             >
                             Motivo
                             </th>
-                            <th
-                              class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                            >
-                         Monto
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                               Monto
                             </th>
@@ -497,12 +493,6 @@ export default {
       page: "Caja",
       load: false,
       modalActivity: false,
-      user:{},
-      checkout:{
-        expenses:0,
-        revenues:0,
-        total:0,
-        activities:[]
       user: {},
       checkout: {
         expenses: 0,
@@ -527,9 +517,6 @@ export default {
       const res = await this.$api.$get(path);
       return res;
     },
-    async AddActivity(){
-      this.load=true
-      this.modalActivity=false
     async AddActivity () {
       this.load = true
       this.modalActivity = false
@@ -541,17 +528,12 @@ export default {
       this.load = false
     },
     async Save(){
-      this.load=true
-      try{
-
       this.load = true
       try {
         let id = this.checkout.id
         let res = await this.$api.$put('checkouts/' + id, {id:id});
         let user = this.user
         user.checkout_id = res.id
-        localStorage.setItem('userAuth',JSON.stringify(user))
-        this.user= user
         localStorage.setItem('userAuth', JSON.stringify(user))
         this.user = user
         await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
@@ -568,11 +550,6 @@ export default {
     let user = localStorage.getItem('userAuth')
     this.user = JSON.parse(user)
     this.$nextTick(async () => {
-    this.load=true
-      await Promise.all([this.getData('checkouts/'+this.user.checkout_id)]).then((v)=>{
-        this.checkout = v[0]
-      })
-      this.load=false
     this.load = true
     await Promise.all([this.getData('checkouts/' + this.user.checkout_id)]).then((v)=>{
       this.checkout = v[0]
