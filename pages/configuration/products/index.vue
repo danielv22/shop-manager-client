@@ -10,7 +10,7 @@
             </nuxtLink>
           </div>
           <div class="col-12">
-            <div class="card">
+            <div class="card" style="overflow: auto;">
               <div class="card-body">
                 <table class="table">
                   <thead>
