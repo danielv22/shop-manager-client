@@ -371,6 +371,8 @@ export default {
       },
   },
   mounted() {
+    let user = localStorage.getItem('userAuth')
+    this.user = JSON.parse(user)
     this.$nextTick(async () => {
       try {
         await this.Data()
